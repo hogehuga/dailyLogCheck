@@ -6,7 +6,7 @@ TMP_IP_CNT="/tmp/tmp_ip_count.tmp"
 TMP_UA="/tmp/tmp_UA_count.tmp"
 TMP_REQ="/tmp/tmp_REQ_count.tmp"
 LOGFILE="/tmp/tmp_accesslog.tmp"
-ACCESSLOG="/var/log/httpd/access_log"
+ACCESSLOG="/var/log/apache2/access_log"
 DISPLINE=15
 
 # pre file create
