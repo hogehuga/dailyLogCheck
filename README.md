@@ -9,45 +9,93 @@ Summary log file.
 
 # Usage
 
+NOTE: Only Ubuntu has confirmed the operation.
+
+NOTE: Will be clone to /opt/dailyLogCheck/ .
+
 1. clone hogehogehugahuga/dailyHttpdLogcheck
+
+```
+$ sudo -s
+# cd /opt
+# git clone https://github.com/hogehuga/dailyLogCheck.git
+```
+
 2. Change the setting according to your own environment.
 
-- On dailyHttpdLogcheck.sh
-  - File path in `#env`
-  - DISPLAYLINE in `#env`
+- On dailyLogCheck.sh
+  - ACCSESSLOG (eg. /var/log/httpd/access_log)
+  - DISPLINE (eg. Enter 30 to display 30 lines.)
+  - IGNORE (eg. if not clone to /opt/dailyLogcheck, change directory)
+- On DailyLogCheck-cron.sh
+  - GITDIR (eg. if not clone to /opt/dailyLogcheck, change directory)
+- pushSlack.sh
+  - WEBHOOKURL (see slack's Incoming Webhook manual.)
+  - CHANNEL (Webhook post channel)
+  - BOTNAME (Name for post user)
 
-3. TEST; execute dailyHttpdLogCheck.sh
+3. TEST; dailyLogCheck.sh
+
+- kick ./dailyLogCheck.sh
+  - If the settings are correct, the report will be printed to standard output.
+
 ```
-[root@wwwhost dailyHttpdLogcheck]# ./dailyHttpdLogcheck.sh 
-HTTPD log watcher (24/Jun/2018)
+root@wwwhost:/opt/dailyLogCheck# ./dailyLogCheck.sh 
+---Apply exclusion settings(ignore.list)--
+HTTPD log watcher (5/May/2020)
 ---Source IP/ASN counts---
-COUNT   IP      ASN
+COUNT\tIP\tASN
  12     xxx.xxx.xxx   ASNNNNN xxxxx.LTD
  9      xxx.xxx.xxx   ASNNNNN xxxxx.LTD
  8      xxx.xxx.xxx   ASNNNNN xxxxx.LTD
  6      xxx.xxx.xxx   ASNNNNN xxxxx.LTD
 ...
 ```
-4. slack setting
 
-- modify pushSlack.sh
-  - WEBHOOKURL, CHANNEL, BOTNAME (%CHANGE... section)
-- modify dailyHttpdLogcheck-cron.sh
-  - add full path to GITDIR
+If you get an error, check the following:
 
-5. TEST pus2Slack;
+- Make sure the path is correct.
+  - ACCESSLOG
+- Make sure the format is correct.
+  - IGNORE
+    - This is "grep based RegExp."
+
+4. TEST; pushSlack.sh
+
+- kick ./pushSlack.sh as `echo "test" | ./pushSlack.sh` .
+  - If successful, the post will be posted to Slack.
+
+If you get an error, check the following:
+
+- Make sure the value is correct.
+  - WEBHOOK
+  - CHANNEL
+
+5. TEST; final, dailyLogCheck-cron.sh
+
+- kick `# ./dailyLogCheck-cron.sh`
+  - IF successful, repot will posted to slack.
+  
+If you get an error, check the following:
+
+- Make sure the value is correct.
+  - GITDIR
+    - This script is kick "dailyLogCheck.sh" and "pushSlack.sh" only.
+
+6. set the cron.
+
+- setting to cron
+
 ```
+# crontab -e
+58 23 * * * /opt/dailyLogCheck/dailyLogCheck-cron.sh > /dev/null 2>&1
 ```
 
-6. add cron
+# contact
 
-- dailyHttpdLogcheck-cron.sh 
+twitter; @hogehuga
 
-# Contact
-
-Twitter; @hogehuga
-
-# example
+# exsample
 
 ```
 # ./daiyHttpdLogcheck.sh
