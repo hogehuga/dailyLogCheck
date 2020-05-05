@@ -18,7 +18,7 @@ echo "HTTPD log watcher ($GREPTODAY)"
 
 # IP/ASN count
 echo "---Source IP/ASN counts---"
-echo -e "COUNT\tIP\tASN"
+echo "COUNT\tIP\tASN"
 
 cat $LOGFILE | awk '{print $1}'| sort | uniq -c | sort -nr| head -n $DISPLINE > $TMP_IP_CNT
 
@@ -33,17 +33,17 @@ done
 # UA
 echo "---UserAgent counts---"
 cat $LOGFILE | awk -F\" '{print $6}' | sort | uniq -c | sort -nr > $TMP_UA
-echo "==TOP5=="
+echo "==TOP $DISPLINE=="
 head $TMP_UA -n $DISPLINE
-echo "==TAIL5=="
+echo "==TAIL $DISPLINE=="
 tail $TMP_UA -n $DISPLINE
 
 #Request
 echo "---Request---"
 cat $LOGFILE | awk -F\" '{print $2}' | sort | uniq -c | sort -nr > $TMP_REQ
-#echo "==TOP5=="
+#echo "==TOP $DISPLINE=="
 #head $TMP_REQ -n $DISPLINE
-#echo "==TAIL5=="
+#echo "==TAIL $DISPLINE=="
 #tail $TMP_REQ -n $DISPLINE
 # ALL
  cat $TMP_REQ
