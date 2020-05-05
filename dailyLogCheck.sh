@@ -13,6 +13,15 @@ DISPLINE=15
 GREPTODAY=`LANG=C date '+%-d/%h/%Y'`
 grep "$GREPTODAY" $ACCESSLOG  > $LOGFILE
 
+# ignore lines
+if [ -f $IGNORE ]; then
+  echo "---Apply exclusion settings(ignore.list)--"
+  cat $IGNORE | while read line
+  do
+    grep -E -v "$line" $LOGFILE > $IGNORE_TMP
+    cat $IGNORE_TMP > $LOGFILE
+  done
+
 # title
 echo "HTTPD log watcher ($GREPTODAY)"
 
