@@ -6,8 +6,11 @@ TMP_IP_CNT="/tmp/tmp_ip_count.tmp"
 TMP_UA="/tmp/tmp_UA_count.tmp"
 TMP_REQ="/tmp/tmp_REQ_count.tmp"
 LOGFILE="/tmp/tmp_accesslog.tmp"
-ACCESSLOG="/var/log/apache2/access_log"
+# NEED CHECK!!
+ACCESSLOG="/var/log/apache2/access.log"
 DISPLINE=15
+IGNORE="/opt/dailyLogCheck/ignore.list"
+IGNORE_TMP="/tmp/tmp_ignore.tmp"
 
 # pre file create
 GREPTODAY=`LANG=C date '+%-d/%h/%Y'`
@@ -21,6 +24,7 @@ if [ -f $IGNORE ]; then
     grep -E -v "$line" $LOGFILE > $IGNORE_TMP
     cat $IGNORE_TMP > $LOGFILE
   done
+fi
 
 # title
 echo "HTTPD log watcher ($GREPTODAY)"
@@ -44,15 +48,15 @@ echo "---UserAgent counts---"
 cat $LOGFILE | awk -F\" '{print $6}' | sort | uniq -c | sort -nr > $TMP_UA
 echo "==TOP $DISPLINE=="
 head $TMP_UA -n $DISPLINE
-echo "==TAIL $DISPLINE=="
+echo "==TAIL $DISPLINE =="
 tail $TMP_UA -n $DISPLINE
 
 #Request
 echo "---Request---"
 cat $LOGFILE | awk -F\" '{print $2}' | sort | uniq -c | sort -nr > $TMP_REQ
-#echo "==TOP $DISPLINE=="
+#echo "==TOP5=="
 #head $TMP_REQ -n $DISPLINE
-#echo "==TAIL $DISPLINE=="
+#echo "==TAIL5=="
 #tail $TMP_REQ -n $DISPLINE
 # ALL
  cat $TMP_REQ
@@ -62,3 +66,4 @@ rm $TMP_IP_CNT
 rm $TMP_UA
 rm $TMP_REQ
 rm $LOGFILE
+rm $IGNORE_TMP
