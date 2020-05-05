@@ -2,8 +2,15 @@
 
 set -eu
 
-#Incoming WebHooksURL
+# NEET SETTINGS
+##Incoming WebHooksURL
 WEBHOOKURL="https://hooks.slack.com/services/%MODIFY_YOUR_WEB_HOOK_URL"
+## send setting
+CHANNEL=${CHANNEL:-"%CHANGE_PUSH_CHANNEL_NAME(eg. #general)"}
+# CHANNEL=${CHANNEL:-"#general"}
+BOTNAME=${BOTNAME:-"%CHANGE_YOUR_BOTNAME(eg. webhook-bot)"}
+# BOTNAME=${BOTNAME:-"I am webhook-bot)"}
+FACEICON=${FACEICON:-":passport_control:"}
 
 # temporal message
 MESSAGEFILE=$(mktemp -t webhooksXXXX)
@@ -36,10 +43,7 @@ do
             ;;
     esac
 done
-# send setting
-CHANNEL=${CHANNEL:-"%CHANGE_PUSH_CHANNEL_NAME(eg. #general)"}
-BOTNAME=${BOTNAME:-"%CHANGE_YOUR_BOTNAME(eg. webhook-bot)"}
-FACEICON=${FACEICON:-":passport_control:"}
+
 # title
 MESSAGE=${MESSAGE:-""}
 
