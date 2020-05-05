@@ -40,7 +40,7 @@ do
   CNT=`echo $line | awk '{print $1}'`
   IP=`echo $line | awk '{print $2}'`
   ASN=`geoiplookup $IP| grep ASNum | sed -e 's/^.*GeoIP\ ASNum\ Edition://g'`
-  echo -e " $CNT\t$IP\t$ASN"
+  echo " $CNT\t$IP\t$ASN"
 done
 
 # UA
